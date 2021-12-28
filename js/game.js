@@ -3,7 +3,7 @@ class Game {
     this.ctx = ctx;
 
     this.background = new Background(ctx);
-    this.background2 = new Background2(ctx);
+    this.backgroundFooter = new BackgroundFooter(ctx);
 
     this.player = new Player(ctx);
 
@@ -56,7 +56,7 @@ class Game {
 
   draw() {
     this.background.draw();
-    this.background2.draw();
+    this.backgroundFooter.draw();
 
     this.player.draw()
     this.obstacles.forEach(obstacle => obstacle.draw());
@@ -66,7 +66,7 @@ class Game {
 
   move() {
     this.background.move();
-    this.background2.move();
+    this.backgroundFooter.move();
 
     this.player.move()
     this.obstacles.forEach(obstacle => obstacle.move());
