@@ -1,89 +1,73 @@
 class Player {
-    constructor(ctx){
-        this.ctx = ctx
+    constructor(ctx) {
+        this.ctx = ctx;
 
-        this.width = 80
-        this.height = 55
+        this.img = new Image();
+        this.img.src = "/assets/images/bird.png";
+        this.img.isReady = false;
 
-        this.x = 225
-        this.y = 100
+        this.width = this.img.width / 3;
+        this.height = this.img.height;
 
-        this.img = new Image ()
-        this.img.src = './images/flappy.png'
+        this.x = 100;
+        this.y = (this.ctx.canvas.height / 2) - this.height;
 
-        this.img.isReady = false
+        this.vx = 0;
+        this.vy = 0;
+        this.ay = 30;
+
+        this.speedY = -3;
 
         this.img.onload = () => {
-            this.img.isReady = true
+            this.img.isReady = true;
         }
 
-        this.vx = 0
-        this.vy = 0
+        this.horizontalFrames = 3;
+        this.verticalFrames = 1;
 
-        this.ay = 0.3
+        this.xFrame = 0;
+        this.yFrame = 0;
 
-        this.jumping = false
-        this.maxY = 370
+        this.jumping = false;
 
     }
 
-    draw (){
-        this.ctx.drawImage(
-            this.img,
-            this.x,
-            this.y,
-            this.width,
-            this.height,
-        )
-    }
-
-   /* setUpListeners(event){
-        const status = event.type === 'keydown'
-
-        if(event.KeyCode === KEY_SPACEBAR){
-            this.movements.up = status
-        }
-
-    }*/
-
-    move (){
- 
-        this.vy += this.ay
-        this.y += this.vy
-
-        console.log('test caida')
-
-        if (this.y <= 0) {
-          this.y = 0
-        }
-        if (this.y >= this.maxY) {
-          this.y = this.maxY
-          this.jumping = false
+    draw() {
+        if (this.img.isReady) {
+            this.ctx.drawImage(
+                this.img,
+                (this.img.width * this.xFrame) / this.horizontalFrames,
+                (this.img.height * this.yFrame) / this.verticalFrames,
+                this.img.width / this.horizontalFrames,
+                this.img.height / this.verticalFrames,
+                this.x,
+                this.y,
+                this.width,
+                this.height
+            )
         }
     }
 
-    onKeyDown(keyCode) {
-        if (keyCode === KEY_SPACEBAR) {
-          this.vy = -5
-          this.jumping = true
-        }
+    oneKeyDown(keyCode) {
+    if (keyCode === SPACE_KEY && !this.jumping) {
+        this.y -= this.ay;
+        this.jumping;
     }
 
+    }
 
-    collidesWith(obstacle) {
-        console.log('entra')
+    /* oneKeyUp(keyCode) {
+     
+    } */
 
-        if (
-          this.x < obstacle.x + obstacle.width &&
-          this.x + this.width > obstacle.x &&
-          this.y < obstacle.y + obstacle.height &&
-          this.y + this.height > obstacle.y
-        ) {
-            console.log('collision')
-          return true
-        }
+
+    move() {
+        this.vy += this.ay;
+        this.y += this.vy;
+
+     /*    if (this.y + this.height <= this.ctx.canvas.height) {
+            this.y = this.ctx.canvas.height - this.height;
+        } */
+    }
         
-        return false
-      }
-
-}
+    }

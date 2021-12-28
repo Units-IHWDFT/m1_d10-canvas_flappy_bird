@@ -1,1 +1,1 @@
-const KEY_SPACEBAR = 32
+const SPACE_KEY = 32;
