@@ -4,7 +4,7 @@ class FooterBackground {
 
   
         this.img = new Image();
-        this.img.src = '/assets/images/game-bg-footer.png';
+        this.img.src = 'images/game-bg-footer.png';
         this.img.isReady = false;
 
         this.width = this.ctx.canvas.width;

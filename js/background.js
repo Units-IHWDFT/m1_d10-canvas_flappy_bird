@@ -10,7 +10,7 @@ class Background {
       this.height = this.ctx.canvas.height
   
       this.img = new Image()
-      this.img.src = "asset/images/bg.png"
+      this.img.src = "images/bg.png"
       this.img.isReady = false
   
       this.img.onload = () => {

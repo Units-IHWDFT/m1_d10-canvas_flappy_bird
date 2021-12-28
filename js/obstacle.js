@@ -1,6 +1,3 @@
-// distance between  obstacles
-const OBSTACLE_FRAMES = 120;
-
 class Obstacle {
     constructor(ctx, y, position) {
 

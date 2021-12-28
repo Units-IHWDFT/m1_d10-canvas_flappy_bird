@@ -10,7 +10,7 @@ class Background2 {
       this.height = 79
   
       this.img = new Image()
-      this.img.src = "asset/images/game-bg-footer.png"
+      this.img.src = "images/game-bg-footer.png"
       this.img.isReady = false
   
       this.img.onload = () => {
