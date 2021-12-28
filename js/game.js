@@ -1,7 +1,5 @@
-class Game
-{
-  constructor (ctx)
-  {
+class Game {
+  constructor(ctx) {
     this.ctx = ctx;
 
     this.background = new Background(ctx);
@@ -19,16 +17,11 @@ class Game
     this.score = 0;
   }
 
-  start ()
-  {
-    if (!this.intervalId)
-    {
-
-      this.intervalId = setInterval(() =>
-      {
+  start() {
+    if (!this.intervalId) {
+      this.intervalId = setInterval(() => {
         // add an obstacle every OBSTACLE_FRAMES
-        if (this.obstacleFramesCount % OBSTACLE_FRAMES === 0)
-        {
+        if (this.obstacleFramesCount % OBSTACLE_FRAMES === 0) {
           this.addObstacle();
           this.obstacleFramesCount = 0;
         }
@@ -40,97 +33,93 @@ class Game
 
         this.draw();
         if (this.hasCollissions()) this.Gameover();
-
       }, 1000 / 60);
     }
   }
 
-  clear ()
-  {
+  clear() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     // to count the score : check the difference between the length of the obstacles array, before and after the filter
     const previousObstaclesLength = this.obstacles.length;
 
-    // delete from the array all the obstacles after they get out of the canvas 
-    this.obstacles = this.obstacles.filter(obstacle => obstacle.x > 0 - obstacle.width);
+    // delete from the array all the obstacles after they get out of the canvas
+    this.obstacles = this.obstacles.filter(
+      (obstacle) => obstacle.x > 0 - obstacle.width
+    );
 
-    // add score : 
-    if (this.obstacles.length < previousObstaclesLength)
-    {
+    // add score :
+    if (this.obstacles.length < previousObstaclesLength) {
       this.score++;
     }
   }
 
-  draw ()
-  {
+  draw() {
     this.background.draw();
     this.backgroundFooter.draw();
 
-    this.player.draw()
-    this.obstacles.forEach(obstacle => obstacle.draw());
+    this.player.draw();
+    this.obstacles.forEach((obstacle) => obstacle.draw());
 
     this.drawScore();
   }
 
-  move ()
-  {
+  move() {
     this.background.move();
     this.backgroundFooter.move();
 
-    this.player.move()
-    this.obstacles.forEach(obstacle => obstacle.move());
+    this.player.move();
+    this.obstacles.forEach((obstacle) => obstacle.move());
   }
 
-  addObstacle ()
-  {
+  addObstacle() {
     const randomY = Math.floor(Math.random() * 300 + 150);
     // create top and bottom obstacles and add them to the array
     this.obstacles.push(new Obstacle(this.ctx, randomY, "top"));
     this.obstacles.push(new Obstacle(this.ctx, randomY, "bottom"));
-    console.log(this.obstacles)
+    console.log(this.obstacles);
   }
 
-  onKeyDown (keyCode)
-  {
+  onKeyDown(keyCode) {
     this.player.onKeyDown(keyCode);
   }
 
-  hasCollissions ()
-  {
-    let hasCollisions = false
-    if (this.obstacles.some(obstacle => this.player.collidesWith(obstacle))) hasCollisions = true;
-    if (this.player.exitsCanvas()) hasCollisions = true
-    return hasCollisions
+  hasCollissions() {
+    let collisions = false;
+    if (this.obstacles.some((obstacle) => this.player.collidesWith(obstacle)))
+      collisions = true;
+    if (this.player.exitsCanvas()) hasCollisions = true;
+    return collisions;
   }
 
-  drawScore ()
-  {
+  drawScore() {
     this.ctx.save();
 
-    this.ctx.fillStyle = 'black';
-    this.ctx.font = ' bold 24px sans-serif';
+    this.ctx.fillStyle = "black";
+    this.ctx.font = " bold 24px sans-serif";
 
     this.ctx.fillText(`Score: ${this.score} pts`, 20, 40);
 
     this.ctx.restore();
   }
 
-  gameOver ()
-  {
+  gameOver() {
     clearInterval(this.intervalId);
 
     this.ctx.save();
 
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    this.ctx.fillStyle = 'white';
-    this.ctx.textAlign = 'center';
-    this.ctx.font = 'bold 32px sans-serif';
-    this.ctx.fillText('Game Over', this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+    this.ctx.fillStyle = "white";
+    this.ctx.textAlign = "center";
+    this.ctx.font = "bold 32px sans-serif";
+    this.ctx.fillText(
+      "Game Over",
+      this.ctx.canvas.width / 2,
+      this.ctx.canvas.height / 2
+    );
 
     this.ctx.restore();
   }
-
 }
