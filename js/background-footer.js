@@ -1,4 +1,4 @@
-class Background2 {
+class BackgroundFooter {
     constructor(ctx) {
       this.ctx = ctx
   

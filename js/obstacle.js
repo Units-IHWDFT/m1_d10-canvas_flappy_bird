@@ -5,10 +5,10 @@ class Obstacle {
         this.img = new Image();
         
         if(position === "top") {
-            this.img.src = 'asset/images/obstacle_top.png';
+            this.img.src = 'images/obstacle_top.png';
             this.img.isReady = false;
         } else {
-            this.img.src = 'asset/images/obstacle_bottom.png';
+            this.img.src = 'images/obstacle_bottom.png';
             this.img.isReady = false;
         }
        

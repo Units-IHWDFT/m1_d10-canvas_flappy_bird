@@ -7,7 +7,7 @@ class Upperobstacle {
         this.height = Math.floor(Math.random())
 
         this.img = new Image ()
-        this.img.src = './js/upper-obstacles.js'
+        this.img.src = 'images/obstacle_top.png'
     
         this.vx = 3
     }
