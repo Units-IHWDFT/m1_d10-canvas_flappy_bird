@@ -7,7 +7,7 @@ class Obstacle {
         if(position === "top") {
             this.img.src = 'images/obstacle_top.png';
             this.img.isReady = false;
-        } else {
+        } else if(position === "bottom"){
             this.img.src = 'images/obstacle_bottom.png';
             this.img.isReady = false;
         }
