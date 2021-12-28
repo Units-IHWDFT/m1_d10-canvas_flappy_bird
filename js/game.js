@@ -1,5 +1,7 @@
-class Game {
-  constructor(ctx) {
+class Game
+{
+  constructor (ctx)
+  {
     this.ctx = ctx;
 
     this.background = new Background(ctx);
@@ -17,12 +19,16 @@ class Game {
     this.score = 0;
   }
 
-  start() {
-    if (!this.intervalId) {
+  start ()
+  {
+    if (!this.intervalId)
+    {
 
-      this.intervalId = setInterval(() => {
+      this.intervalId = setInterval(() =>
+      {
         // add an obstacle every OBSTACLE_FRAMES
-        if (this.obstacleFramesCount % OBSTACLE_FRAMES === 0) {
+        if (this.obstacleFramesCount % OBSTACLE_FRAMES === 0)
+        {
           this.addObstacle();
           this.obstacleFramesCount = 0;
         }
@@ -33,28 +39,31 @@ class Game {
         this.move();
 
         this.draw();
-        this.checkCollissions();
+        if (this.hasCollissions()) this.Gameover();
 
       }, 1000 / 60);
     }
   }
 
-  clear() {
+  clear ()
+  {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     // to count the score : check the difference between the length of the obstacles array, before and after the filter
     const previousObstaclesLength = this.obstacles.length;
 
     // delete from the array all the obstacles after they get out of the canvas 
-    this.obstacles = this.obstacles.filter(obstacle => obstacle.x  > 0 - obstacle.width);
-    
+    this.obstacles = this.obstacles.filter(obstacle => obstacle.x > 0 - obstacle.width);
+
     // add score : 
-    if (this.obstacles.length < previousObstaclesLength) {
-       this.score++;
+    if (this.obstacles.length < previousObstaclesLength)
+    {
+      this.score++;
     }
   }
 
-  draw() {
+  draw ()
+  {
     this.background.draw();
     this.backgroundFooter.draw();
 
@@ -64,7 +73,8 @@ class Game {
     this.drawScore();
   }
 
-  move() {
+  move ()
+  {
     this.background.move();
     this.backgroundFooter.move();
 
@@ -72,7 +82,8 @@ class Game {
     this.obstacles.forEach(obstacle => obstacle.move());
   }
 
-  addObstacle() {
+  addObstacle ()
+  {
     const randomY = Math.floor(Math.random() * 300 + 150);
     // create top and bottom obstacles and add them to the array
     this.obstacles.push(new Obstacle(this.ctx, randomY, "top"));
@@ -80,29 +91,33 @@ class Game {
     console.log(this.obstacles)
   }
 
-  onKeyDown(keyCode) {
+  onKeyDown (keyCode)
+  {
     this.player.onKeyDown(keyCode);
   }
 
-  checkCollissions() {
-    const condition = this.obstacles.some(obstacle => this.player.collidesWith(obstacle));
-    if (condition) {
-      this.gameOver();
-    }
+  hasCollissions ()
+  {
+    let hasCollisions = false
+    if (this.obstacles.some(obstacle => this.player.collidesWith(obstacle))) hasCollisions = true;
+    if (this.player.exitsCanvas()) hasCollisions = true
+    return hasCollisions
   }
 
-  drawScore() {
+  drawScore ()
+  {
     this.ctx.save();
 
     this.ctx.fillStyle = 'black';
     this.ctx.font = ' bold 24px sans-serif';
 
-    this.ctx.fillText(`Score: ${this.score} ptos`, 20, 40);
+    this.ctx.fillText(`Score: ${this.score} pts`, 20, 40);
 
     this.ctx.restore();
   }
 
-  gameOver() {
+  gameOver ()
+  {
     clearInterval(this.intervalId);
 
     this.ctx.save();
