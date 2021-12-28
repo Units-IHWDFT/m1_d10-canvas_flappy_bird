@@ -1,21 +1,18 @@
-const canvas = document.getElementById('my-canvas');
+const canvas = document.getElementById('my-canvas')
 
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d')
 
-const game = new Game(ctx);
+const game = new Game(ctx)
 
-window.onload = function() {
-  document.getElementById('start-button').onclick = () => {
-    game.start();
-  };
+const button = document.getElementById('start-button')
 
-  document.addEventListener('keydown' , (event) => {
-    game.oneKeyDown(event.keyCode)
-  })
+button.onclick = () => {
+  button.remove()
 
-  /* document.addEventListener('keyup' , (event) => {
-    game.oneKeyUp(event.keyCode)
-  }) */
+  game.start()
+}
 
+document.addEventListener('keydown', (event) => {
+  game.onKeyDown(event.keyCode)
+})
 
-};
