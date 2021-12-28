@@ -15,7 +15,7 @@ class Player {
       this.height = 32;
   
       this.img = new Image();
-      this.img.src = 'images/sprite.png';
+      this.img.src = 'images/flappy-sprite.png';
       this.img.isReady = false;
   
       this.img.onload = () => {
