@@ -82,6 +82,7 @@ class Player {
   }
 
   exitsCanvas() {
+    console.log("exitsCanvas", this.y, this.ctx.canvas.height);
     return this.y > this.ctx.canvas.height;
   }
 }
