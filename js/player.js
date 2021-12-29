@@ -75,13 +75,14 @@ class Player {
   collidesWith(obstacle) {
     return (
       this.x < obstacle.x + obstacle.width &&
-      this.x + this.height > obstacle.x &&
+      this.x + this.width > obstacle.x &&
       this.y < obstacle.y + obstacle.height &&
-      this.y + this.width > obstacle.y
+      this.y + this.height > obstacle.y
     );
   }
 
   exitsCanvas() {
+    console.log();
     return this.y > this.ctx.canvas.height || this.y + this.height < 0;
   }
 }
