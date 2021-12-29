@@ -32,6 +32,7 @@ class Game {
         this.move();
 
         this.draw();
+
         if (this.hasCollissions()) this.gameOver();
       }, 1000 / 60);
     }
@@ -86,9 +87,15 @@ class Game {
 
   hasCollissions() {
     let collisions = false;
-    if (this.obstacles.some((obstacle) => this.player.collidesWith(obstacle)))
+
+    if (this.obstacles.some((obstacle) => this.player.collidesWith(obstacle))) {
       collisions = true;
-    if (this.player.exitsCanvas()) hasCollisions = true;
+    }
+
+    if (this.player.exitsCanvas()) {
+      collisions = true;
+    }
+
     return collisions;
   }
 

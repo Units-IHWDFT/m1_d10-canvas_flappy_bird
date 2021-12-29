@@ -82,6 +82,6 @@ class Player {
   }
 
   exitsCanvas() {
-    return this.y > this.ctx.height;
+    return this.y > this.ctx.canvas.height;
   }
 }
