@@ -32,7 +32,7 @@ class Game {
         this.move();
 
         this.draw();
-        if (this.hasCollissions()) this.Gameover();
+        if (this.hasCollissions()) this.gameOver();
       }, 1000 / 60);
     }
   }
