@@ -8,7 +8,7 @@ class Player {
 
     // speed and acceleration
     this.vy = 0;
-    this.ay = 0.15;
+    this.ay = 0.1;
 
     // size of the player
     this.width = 46;
