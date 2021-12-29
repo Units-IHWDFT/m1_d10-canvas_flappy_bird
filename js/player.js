@@ -68,7 +68,7 @@ class Player {
 
   onKeyDown(keyCode) {
     if (keyCode === SPACE_BAR) {
-      this.vy = -2.5;
+      this.vy = -3.5;
     }
   }
 
