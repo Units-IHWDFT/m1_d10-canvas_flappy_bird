@@ -12,4 +12,3 @@ const startButton =  document.getElementById("start-button")
     startButton.blur();
     game.start();
   };
-

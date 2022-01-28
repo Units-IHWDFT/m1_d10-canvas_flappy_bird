@@ -70,6 +70,7 @@ class Game {
 
     if (this.player.exitsCanvas()) collisions = true;
 
+
     return collisions;
   }
 
