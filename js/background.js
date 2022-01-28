@@ -1,47 +1,80 @@
 class Background {
-    constructor(ctx) {
-      this.ctx = ctx
-  
-      this.x = 0
-      this.y = -79
-      this.vx = -1
-  
-      this.width = this.ctx.canvas.width
-      this.height = this.ctx.canvas.height
-  
-      this.img = new Image()
-      this.img.src = "images/bg.png"
-      this.img.isReady = false
-  
-      this.img.onload = () => {
-        this.img.isReady = true
-      }
-    }
-  
-    draw() {
-      if (this.img.isReady) {
-        this.ctx.drawImage(
-          this.img,
-          this.x,
-          this.y,
-          this.width,
-          this.height
-        )
-        this.ctx.drawImage(
-          this.img,
-          this.x + this.width,
-          this.y,
-          this.width,
-          this.height
-        )
-      }
-    }
-  
-    move() {
-      this.x += this.vx
-  
-      if (this.x + this.width <= 0) {
-        this.x = 0
-      }
-    }
+  constructor(ctx) {
+    this.ctx = ctx;
+
+    this.backgroundFront = {
+      img: new Image(),
+      width: this.ctx.canvas.width,
+      height: 79,
+      x: 0,
+      y: this.ctx.canvas.height - 79,
+      vx: -3,
+      vy: 0,
+    };
+    this.backgroundFront.img.src = "images/bg-front.png";
+
+    this.backgroundFar = {
+      img: new Image(),
+      width: this.ctx.canvas.width,
+      height: this.ctx.canvas.height,
+      x: 0,
+      y: -79,
+      vx: -1,
+      vy: 0,
+    };
+    this.backgroundFar.img.src = "images/bg-far.png";
   }
+
+  init(){
+    this.backgroundFar.x = 0
+    this.backgroundFar.y = -79
+    this.backgroundFront.x = 0
+    this.backgroundFront.y = this.ctx.canvas.height - 79
+  }
+
+  move(frameNumber) {
+    this.backgroundFront.x += this.backgroundFront.vx;
+    this.backgroundFar.x += this.backgroundFar.vx;
+
+    if (this.backgroundFront.x + this.backgroundFront.width <= 0)
+      this.backgroundFront.x = 0;
+    if (this.backgroundFar.x + this.backgroundFar.width <= 0)
+      this.backgroundFar.x = 0;
+  }
+
+  draw(frameNumber) {
+    // Far bg first piece
+    this.ctx.drawImage(
+      this.backgroundFar.img,
+      this.backgroundFar.x,
+      this.backgroundFar.y,
+      this.backgroundFar.width,
+      this.backgroundFar.height
+    );
+    // Far bg second piece
+    this.ctx.drawImage(
+      this.backgroundFar.img,
+      this.backgroundFar.x + this.backgroundFar.width,
+      this.backgroundFar.y,
+      this.backgroundFar.width,
+      this.backgroundFar.height
+    );
+
+    // Front bg first piece
+    this.ctx.drawImage(
+      this.backgroundFront.img,
+      this.backgroundFront.x,
+      this.backgroundFront.y,
+      this.backgroundFront.width,
+      this.backgroundFront.height
+    );
+    // Front bg second piece
+    this.ctx.drawImage(
+      this.backgroundFront.img,
+      this.backgroundFront.x + this.backgroundFront.width,
+      this.backgroundFront.y,
+      this.backgroundFront.width,
+      this.backgroundFront.height
+    );
+  }
+}

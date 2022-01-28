@@ -1,123 +1,92 @@
 class Game {
-  constructor(ctx) {
+  constructor(ctx, player, background, obstacles) {
     this.ctx = ctx;
-
-    this.background = new Background(ctx);
-    this.backgroundFooter = new BackgroundFooter(ctx);
-
-    this.player = new Player(ctx);
-
-    this.intervalId = undefined;
-
-    // obstacle
-    this.obstacles = [];
-    this.obstacleFramesCount = 0;
-
-    // score
+    this.player = player;
+    this.background = background;
+    this.obstacles = obstacles;
+    this.frameNumber = 0;
     this.score = 0;
+
+    document.addEventListener("keydown", (event) => {
+      this.onKeyDown(event.keyCode);
+    });
   }
 
   start() {
-    if (!this.intervalId) {
-      this.intervalId = setInterval(() => {
-        // add an obstacle every OBSTACLE_FRAMES
-        if (this.obstacleFramesCount % OBSTACLE_FRAMES === 0) {
-          this.addObstacle();
-          this.obstacleFramesCount = 0;
-        }
-        this.obstacleFramesCount++;
+    this.init();
+    this.play();
+  }
 
-        this.clear();
+  init() {
+    if(this.frameNumber) this.stop()
+    this.frameNumber = 0;
+    this.background.init()
+    this.obstacles.init()
+    this.player.init()
+    // this.sound.init() etc..
+  }
 
-        this.move();
-
-        this.draw();
-
-        if (this.hasCollissions()) this.gameOver();
-      }, 1000 / 60);
+  play() {
+    this.move();
+    this.draw();
+    if (this.checkCollisions()) this.gameOver();
+    if (this.frameNumber !== null) {
+      this.frameNumber = requestAnimationFrame(this.play.bind(this));
     }
   }
 
-  clear() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-    // to count the score : check the difference between the length of the obstacles array, before and after the filter
-    const previousObstaclesLength = this.obstacles.length;
-
-    // delete from the array all the obstacles after they get out of the canvas
-    this.obstacles = this.obstacles.filter(
-      (obstacle) => obstacle.x > 0 - obstacle.width
-    );
-
-    // add score :
-    if (this.obstacles.length < previousObstaclesLength) {
-      this.score++;
-    }
-  }
-
-  draw() {
-    this.background.draw();
-    this.backgroundFooter.draw();
-
-    this.player.draw();
-    this.obstacles.forEach((obstacle) => obstacle.draw());
-
-    this.drawScore();
-  }
-
-  move() {
-    this.background.move();
-    this.backgroundFooter.move();
-
-    this.player.move();
-    this.obstacles.forEach((obstacle) => obstacle.move());
-  }
-
-  addObstacle() {
-    const randomY = Math.floor(Math.random() * 300 + 150);
-    // create top and bottom obstacles and add them to the array
-    this.obstacles.push(new Obstacle(this.ctx, randomY, "top"));
-    this.obstacles.push(new Obstacle(this.ctx, randomY, "bottom"));
-    console.log(this.obstacles);
+  stop() {
+    cancelAnimationFrame(this.frameNumber);
+    this.frameNumber = null;
   }
 
   onKeyDown(keyCode) {
-    this.player.onKeyDown(keyCode);
+    this.player.flyUp();
+  }
+  move() {
+    this.background.move(this.frameNumber);
+    this.obstacles.move(this.frameNumber);
+    this.player.move(this.frameNumber);
   }
 
-  hasCollissions() {
+  draw() {
+    this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.background.draw(this.frameNumber);
+    this.obstacles.draw(this.frameNumber);
+    this.player.draw(this.frameNumber);
+    this.drawScore();
+  }
+
+  checkCollisions() {
     let collisions = false;
 
-    if (this.obstacles.some((obstacle) => this.player.collidesWith(obstacle))) {
+    if (
+      this.obstacles.objects.some((obstacle) =>
+        this.player.collidesWith(obstacle)
+      )
+    ) {
       collisions = true;
     }
 
-    if (this.player.exitsCanvas()) {
-      collisions = true;
-    }
+    if (this.player.exitsCanvas()) collisions = true;
+
 
     return collisions;
   }
 
   drawScore() {
     this.ctx.save();
-
     this.ctx.fillStyle = "black";
     this.ctx.font = " bold 24px sans-serif";
-
     this.ctx.fillText(`Score: ${this.score} pts`, 20, 40);
-
     this.ctx.restore();
   }
 
   gameOver() {
-    clearInterval(this.intervalId);
-
+    this.stop();
     this.ctx.save();
-
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "center";
     this.ctx.font = "bold 32px sans-serif";
@@ -126,7 +95,6 @@ class Game {
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height / 2
     );
-
     this.ctx.restore();
   }
 }
